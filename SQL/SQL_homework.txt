@@ -1,0 +1,54 @@
+Домашнее задание №1 - Выбор и фильтрация данных, запрос SELECT
+
+    1. Write a request to select students in the order in which they were registered.
+
+SELECT name FROM students ORDER BY registration_date;
+
+
+2. Write a query to select the 5 most expensive courses that have more than 4 students and last more than 10 hours.
+
+SELECT name FROM courses WHERE students_count > 4 AND duration > 10 ORDER BY price DESC LIMIT 5;
+
+
+3. Write one (!) query that simultaneously displays a list of the names of the three youngest students, the names of the three oldest teachers and the names of the three longest courses.
+
+(SELECT name FROM students order by age limit 3) UNION (SELECT name FROM teachers order by age DESC limit 3) UNION (SELECT name FROM courses order by duration DESC limit 3);
+
+
+4. Write a query to select the average age of all teachers with salaries over 10,000.
+
+SELECT AVG(age) FROM teachers WHERE salary > 10000;
+
+
+5. Write a request to calculate the amount, how much it will cost to buy all design courses.
+
+SELECT SUM(price) FROM courses WHERE type = 'DESIGN';
+
+
+6. Write a query to calculate how many minutes (!) all programming courses last.
+
+SELECT name, duration, duration*60 AS duration_in_minutes FROM courses ;
+
+
+
+7.Write a query that prints out the sum of how many hours each student should eventually study (the sum of the duration of all courses for which he signed up).
+
+    As a result, the query returns two columns: Student's name — Number of hours.
+
+SELECT students.name as student_name, duration from courses join subscriptions ON subscriptions.course_id = courses.id join students on subscriptions.student_id = students.id
+
+
+    8. Write a query that will calculate for each teacher the average age of his students.
+
+    As a result, the query returns two columns: Teacher Name - Average Age of Students.
+
+SELECT teachers.name as teacher_name, avg(students.age) as average_students_age FROM teachers join courses on teachers.id = courses.teacher_id join subscriptions on subscriptions.course_id=courses.id 
+join students on students.id=subscriptions.student_id group by teachers.name
+
+
+3. Write a query that returns the average teacher salary for each course type (Design/Programming/Marketing, etc.).
+    
+As a result, the query returns two columns: Rate Type - Average salary.
+
+
+SELECT courses.type as courses_type, AVG(teachers.salary) as average_teacher_salary FROM courses join teachers on teachers.id = courses.teacher_id group by courses.type
